@@ -1,9 +1,11 @@
 # Convert Regular Expression to e-NFA
 ___
+Assignment 1 of Compiler Construction in Fall '18  
+Regular Expression contains only the basic operators
 ## Preprocessing
 - `.` is used to represent concatenation
     - Makes it easier to evaluate the expression
-    - `.` is actually an extended operator to match any character. Since the regular expression only contains basic operators, it can be used for concatenation
+    - `.` is actually an extended operator to match any character. Since the regular expression contains only the basic operators, it can be used for concatenation
 - Regular Expression is converted from Infix expression to Postfix
     - `*` is already in Postfix notation. So, it was treated as an operand/character during the conversion
 
