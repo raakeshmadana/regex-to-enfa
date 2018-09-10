@@ -1,4 +1,4 @@
-# Convert Regular Expression to e-NFA
+# Convert Regular Expression to &#x3b5;-NFA
 ___
 Assignment 1 of Compiler Construction in Fall '18  
 Regular Expression contains only the basic operators
