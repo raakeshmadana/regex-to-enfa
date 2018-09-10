@@ -11,6 +11,8 @@ public class RegexToENFA {
     static List<List<Edge>> enfa = new ArrayList<List<Edge>>(); // ENFA is represented as an Adjacency List
     static Deque<Integer> stack = new ArrayDeque<Integer>(); // A stack is maintained to evaluate the postfix regex notation
     static Character epsilon = '\u03b5'; // Represent epsilon transitions
+    static Character[][] enfaMatrix;
+    static int matrixDimension;
 
     private static void basicMachine(Character character) {
         for(int j = 0; j < 2; j++) {
@@ -105,21 +107,25 @@ public class RegexToENFA {
         }
     }
 
-    private static void printAdjMatrix() {
-        System.out.println("Adjacency Matrix");
-        int matrixDimension = enfa.size();
-        Character[][] adjMatrix = new Character[matrixDimension][matrixDimension];
+    private static void createAdjMatrix() {
+        matrixDimension = enfa.size();
+        enfaMatrix = new Character[matrixDimension][matrixDimension];
+
         for(int i = 0; i < matrixDimension; i++) {
-            Arrays.fill(adjMatrix[i], null);
+            Arrays.fill(enfaMatrix[i], null);
         }
 
         for(int i = 0; i < enfa.size(); i++) {
             List<Edge> edgeList = enfa.get(i);
             for(int j = 0; j < edgeList.size(); j++) {
                 Edge edge = edgeList.get(j);
-                adjMatrix[i][edge.nodeID] = edge.transition;
+                enfaMatrix[i][edge.nodeID] = edge.transition;
             }
         }
+    }
+
+    private static void printAdjMatrix() {
+        System.out.println("Adjacency Matrix");
 
         System.out.print(" \t");
         for(int i = 0; i < matrixDimension; i++) {
@@ -129,7 +135,7 @@ public class RegexToENFA {
         for(int i = 0; i < matrixDimension; i++) {
             System.out.printf("%4d\t", i);
             for(int j = 0; j < matrixDimension; j++) {
-                System.out.printf("%4c\t", adjMatrix[i][j]);
+                System.out.printf("%4c\t", enfaMatrix[i][j]);
             }
             System.out.println();
         }
@@ -155,6 +161,8 @@ public class RegexToENFA {
                     basicMachine(c);
             }
         }
+
+        createAdjMatrix();
 
         printAdjList();
         System.out.println();
