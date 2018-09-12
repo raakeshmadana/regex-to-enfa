@@ -13,6 +13,8 @@ public class RegexToENFA {
     static Character epsilon = '\u03b5'; // Represent epsilon transitions
     static Character[][] enfaMatrix;
     static int matrixDimension;
+    static int initialState;
+    static int finalState;
 
     private static void basicMachine(Character character) {
         for(int j = 0; j < 2; j++) {
@@ -23,8 +25,11 @@ public class RegexToENFA {
         List<Edge> adjList = enfa.get(enfa.size() - 2);
         Edge edge = new Edge(enfa.size() - 1, character);
         adjList.add(edge);
-        stack.addFirst(enfa.size() - 1);
-        stack.addFirst(enfa.size() - 2);
+
+        initialState = enfa.size() - 2;
+        finalState = enfa.size() - 1;
+        stack.addFirst(finalState);
+        stack.addFirst(initialState);
     }
 
     private static void kleeneClosure() {
@@ -48,8 +53,10 @@ public class RegexToENFA {
         edge = new Edge(enfa.size() - 1, epsilon);
         adjList.add(edge);
 
-        stack.addFirst(enfa.size() - 1);
-        stack.addFirst(enfa.size() - 2);
+        initialState = enfa.size() - 2;
+        finalState = enfa.size() - 1;
+        stack.addFirst(finalState);
+        stack.addFirst(initialState);
     }
     
     private static void concatenation() {
@@ -62,8 +69,10 @@ public class RegexToENFA {
         Edge edge = new Edge(head2, epsilon); 
         adjList.add(edge);
 
-        stack.addFirst(tail2);
-        stack.addFirst(head1);
+        initialState = head1;
+        finalState = tail2;
+        stack.addFirst(initialState);
+        stack.addFirst(finalState);
     }
 
     private static void alternation() {
@@ -91,8 +100,10 @@ public class RegexToENFA {
         edge = new Edge(enfa.size() - 1, epsilon);
         adjList.add(edge);
 
-        stack.addFirst(enfa.size() - 1);
-        stack.addFirst(enfa.size() - 2);
+        initialState = enfa.size() - 2;
+        finalState = enfa.size() - 1;
+        stack.addFirst(finalState);
+        stack.addFirst(initialState);
     }
 
     private static void printAdjList() {
@@ -163,6 +174,9 @@ public class RegexToENFA {
         }
 
         createAdjMatrix();
+
+        System.out.println("Initial State" + initialState);
+        System.out.println("Final State" + finalState);
 
         printAdjList();
         System.out.println();
