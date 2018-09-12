@@ -19,51 +19,48 @@ public class RegexToENFA {
     static int initialState;
     static int finalState;
 
+    private static void addState() {
+        List<Edge> adjList = new ArrayList<Edge>();
+        enfa.add(adjList);
+    }
+
+    private static void addTransition(int source, int destination, Character character) {
+        List<Edge> adjList = enfa.get(source);
+        Edge edge = new Edge(destination, character);
+        adjList.add(edge);
+
+        statesWithInTransitions.add(destination);
+    }
+
     private static void basicMachine(Character character) {
-        for(int j = 0; j < 2; j++) {
-            List<Edge> adjList = new ArrayList<Edge>();
-            enfa.add(adjList);
+        for(int i = 0; i < 2; i++) {
+            addState();
         }
 
-        List<Edge> adjList = enfa.get(enfa.size() - 2);
-        Edge edge = new Edge(enfa.size() - 1, character);
-        adjList.add(edge);
+        addTransition(enfa.size() - 2, enfa.size() - 1, character);
 
         stack.addFirst(enfa.size() - 1);
         stack.addFirst(enfa.size() - 2);
         finalState = enfa.size() - 1;
-
-        statesWithInTransitions.add(finalState);
     }
 
     private static void kleeneClosure() {
         int head = stack.removeFirst();
         int tail = stack.removeFirst();
 
-        for(int j = 0; j < 2; j++) {
-            List<Edge> adjList = new ArrayList<Edge>();
-            enfa.add(adjList);
+        for(int i = 0; i < 2; i++) {
+            addState();
         }
 
-        List<Edge> adjList = enfa.get(enfa.size() - 2);
-        Edge edge = new Edge(head, epsilon);
-        adjList.add(edge);
-        statesWithInTransitions.add(head);
+        addTransition(enfa.size() - 2, head, epsilon);
+        addTransition(enfa.size() - 2, enfa.size() - 1, epsilon);
 
-        edge = new Edge(enfa.size() - 1, epsilon);
-        adjList.add(edge);
-
-        adjList = enfa.get(tail);
-        edge = new Edge(head, epsilon);
-        adjList.add(edge);
-        edge = new Edge(enfa.size() - 1, epsilon);
-        adjList.add(edge);
+        addTransition(tail, head, epsilon);
+        addTransition(tail, enfa.size() - 1, epsilon);
 
         stack.addFirst(enfa.size() - 1);
         stack.addFirst(enfa.size() - 2);
         finalState = enfa.size() - 1;
-
-        statesWithInTransitions.add(finalState);
     }
     
     private static void concatenation() {
@@ -72,10 +69,7 @@ public class RegexToENFA {
         int head1 = stack.removeFirst();
         int tail1 = stack.removeFirst();
 
-        List<Edge> adjList = enfa.get(tail1);
-        Edge edge = new Edge(head2, epsilon); 
-        adjList.add(edge);
-        statesWithInTransitions.add(head2);
+        addTransition(tail1, head2, epsilon);
 
         stack.addFirst(tail2);
         stack.addFirst(head1);
@@ -89,32 +83,19 @@ public class RegexToENFA {
         int head1 = stack.removeFirst();
         int tail1 = stack.removeFirst();
 
-        for(int j = 0; j < 2; j++) {
-            List<Edge> adjList = new ArrayList<Edge>();
-            enfa.add(adjList);
+        for(int i = 0; i < 2; i++) {
+            addState();
         }
 
-        List<Edge> adjList = enfa.get(enfa.size() - 2);
-        Edge edge = new Edge(head1, epsilon);
-        adjList.add(edge);
-        statesWithInTransitions.add(head1);
-        edge = new Edge(head2, epsilon);
-        adjList.add(edge);
-        statesWithInTransitions.add(head2);
+        addTransition(enfa.size() - 2, head1, epsilon);
+        addTransition(enfa.size() - 2, head2, epsilon);
 
-        adjList = enfa.get(tail1);
-        edge = new Edge(enfa.size() - 1, epsilon);
-        adjList.add(edge);
-
-        adjList = enfa.get(tail2);
-        edge = new Edge(enfa.size() - 1, epsilon);
-        adjList.add(edge);
+        addTransition(tail1, enfa.size() - 1, epsilon);
+        addTransition(tail2, enfa.size() - 1, epsilon);
 
         stack.addFirst(enfa.size() - 1);
         stack.addFirst(enfa.size() - 2);
         finalState = enfa.size() - 1;
-
-        statesWithInTransitions.add(finalState);
     }
 
     private static void printAdjList() {
