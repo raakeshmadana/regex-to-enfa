@@ -15,7 +15,7 @@ public class RegexToENFA {
     static Character epsilon = '\u03b5'; // Represent epsilon transitions
     static Character[][] enfaMatrix;
     static int matrixDimension;
-    static SortedSet<Integer> statesWithInTransitions = new TreeSet<Integer>();
+    static SortedSet<Integer> statesWithInTransitions = new TreeSet<Integer>(); // Maintain states with transitions into it
     static int initialState;
     static int finalState;
 
@@ -165,6 +165,7 @@ public class RegexToENFA {
             }
         }
 
+        // Find Initial State
         Integer[] nonInitialStates = statesWithInTransitions.toArray(new Integer[0]);
         for(int i = 0; i < nonInitialStates.length; i++) {
             if(i != nonInitialStates[i]) {
