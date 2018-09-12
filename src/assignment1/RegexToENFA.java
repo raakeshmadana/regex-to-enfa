@@ -175,9 +175,11 @@ public class RegexToENFA {
 
         createAdjMatrix();
 
-        System.out.println("Initial State" + initialState);
-        System.out.println("Final State" + finalState);
+        System.out.println();
+        System.out.println("Initial State: " + initialState);
+        System.out.println("Final State: " + finalState);
 
+        System.out.println();
         printAdjList();
         System.out.println();
         printAdjMatrix();
