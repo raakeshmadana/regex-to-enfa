@@ -105,7 +105,7 @@ public class RegexToENFA {
             System.out.println(i);
             for(int j = 0; j < edgeList.size(); j++) {
                 Edge edge = edgeList.get(j);
-                System.out.println(edge.transition + " -> " + edge.nodeID);
+                System.out.println(edge.transition + " -> " + edge.state);
             }
         }
     }
@@ -122,7 +122,7 @@ public class RegexToENFA {
             List<Edge> edgeList = enfa.get(i);
             for(int j = 0; j < edgeList.size(); j++) {
                 Edge edge = edgeList.get(j);
-                enfaMatrix[i][edge.nodeID] = edge.transition;
+                enfaMatrix[i][edge.state] = edge.transition;
             }
         }
     }

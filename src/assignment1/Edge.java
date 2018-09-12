@@ -2,11 +2,11 @@ package assignment1;
 
 public class Edge {
 
-    int nodeID;
+    int state;
     Character transition;
 
-    public Edge(int nodeID, Character transition) {
-        this.nodeID = nodeID;
+    public Edge(int state, Character transition) {
+        this.state = state;
         this.transition = transition;
     }
 }
