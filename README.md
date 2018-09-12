@@ -18,6 +18,6 @@ Classes will be placed in `bin` directory. Feel free to change the path as you w
 `java -cp <path to bin> assignment1.Assignment1 <input regex>`
 
 ## Things to Note in the Output
-- e-NFA is printed as Adjacency List and Adjacency Matrix
+- &#x3b5;-NFA is printed as Adjacency List and Adjacency Matrix
 - `null` is used to represent the absence of a transition in the Adjacency Matrix
 - Unicode codepoint `03b5` is used to represent epsilon transitions
