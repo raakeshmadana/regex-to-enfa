@@ -4,9 +4,9 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.List;
 
 public class RegexToENFA {
 
@@ -15,7 +15,7 @@ public class RegexToENFA {
     static Character epsilon = '\u03b5'; // Represent epsilon transitions
     static Character[][] enfaMatrix;
     static int matrixDimension;
-    static SortedSet<Integer> statesWithInTransitions= new TreeSet<Integer>();
+    static SortedSet<Integer> statesWithInTransitions = new TreeSet<Integer>();
     static int initialState;
     static int finalState;
 
@@ -29,10 +29,10 @@ public class RegexToENFA {
         Edge edge = new Edge(enfa.size() - 1, character);
         adjList.add(edge);
 
-        initialState = enfa.size() - 2;
+        stack.addFirst(enfa.size() - 1);
+        stack.addFirst(enfa.size() - 2);
         finalState = enfa.size() - 1;
-        stack.addFirst(finalState);
-        stack.addFirst(initialState);
+
         statesWithInTransitions.add(finalState);
     }
 
@@ -49,6 +49,7 @@ public class RegexToENFA {
         Edge edge = new Edge(head, epsilon);
         adjList.add(edge);
         statesWithInTransitions.add(head);
+
         edge = new Edge(enfa.size() - 1, epsilon);
         adjList.add(edge);
 
@@ -58,10 +59,9 @@ public class RegexToENFA {
         edge = new Edge(enfa.size() - 1, epsilon);
         adjList.add(edge);
 
-        initialState = enfa.size() - 2;
+        stack.addFirst(enfa.size() - 1);
+        stack.addFirst(enfa.size() - 2);
         finalState = enfa.size() - 1;
-        stack.addFirst(finalState);
-        stack.addFirst(initialState);
 
         statesWithInTransitions.add(finalState);
     }
@@ -77,10 +77,10 @@ public class RegexToENFA {
         adjList.add(edge);
         statesWithInTransitions.add(head2);
 
-        initialState = head1;
+        stack.addFirst(tail2);
+        stack.addFirst(head1);
         finalState = tail2;
-        stack.addFirst(initialState);
-        stack.addFirst(finalState);
+
     }
 
     private static void alternation() {
@@ -110,10 +110,10 @@ public class RegexToENFA {
         edge = new Edge(enfa.size() - 1, epsilon);
         adjList.add(edge);
 
-        initialState = enfa.size() - 2;
+        stack.addFirst(enfa.size() - 1);
+        stack.addFirst(enfa.size() - 2);
         finalState = enfa.size() - 1;
-        stack.addFirst(finalState);
-        stack.addFirst(initialState);
+
         statesWithInTransitions.add(finalState);
     }
 
@@ -192,13 +192,11 @@ public class RegexToENFA {
             }
         }
 
-        createAdjMatrix();
-
-        System.out.println();
         System.out.println("Initial State: " + initialState);
         System.out.println("Final State: " + finalState);
 
-        System.out.println();
+        createAdjMatrix();
+
         printAdjList();
         System.out.println();
         printAdjMatrix();
