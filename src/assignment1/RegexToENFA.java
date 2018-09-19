@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class RegexToENFA {
 
@@ -15,7 +13,6 @@ public class RegexToENFA {
     static Character epsilon = '\u03b5'; // Represent epsilon transitions
     static Character[][] enfaMatrix;
     static int matrixDimension;
-    static SortedSet<Integer> statesWithInTransitions = new TreeSet<Integer>(); // Maintain states with transitions into it
     static int initialState;
     static int finalState;
 
@@ -28,8 +25,6 @@ public class RegexToENFA {
         List<Edge> adjList = enfa.get(source);
         Edge edge = new Edge(destination, character);
         adjList.add(edge);
-
-        statesWithInTransitions.add(destination);
     }
 
     private static void basicMachine(Character character) {
@@ -41,7 +36,6 @@ public class RegexToENFA {
 
         stack.addFirst(enfa.size() - 1);
         stack.addFirst(enfa.size() - 2);
-        finalState = enfa.size() - 1;
     }
 
     private static void kleeneClosure() {
@@ -60,7 +54,6 @@ public class RegexToENFA {
 
         stack.addFirst(enfa.size() - 1);
         stack.addFirst(enfa.size() - 2);
-        finalState = enfa.size() - 1;
     }
     
     private static void concatenation() {
@@ -73,8 +66,6 @@ public class RegexToENFA {
 
         stack.addFirst(tail2);
         stack.addFirst(head1);
-        finalState = tail2;
-
     }
 
     private static void alternation() {
@@ -95,7 +86,6 @@ public class RegexToENFA {
 
         stack.addFirst(enfa.size() - 1);
         stack.addFirst(enfa.size() - 2);
-        finalState = enfa.size() - 1;
     }
 
     private static void printAdjList() {
@@ -165,14 +155,11 @@ public class RegexToENFA {
             }
         }
 
-        // Find Initial State
-        Integer[] nonInitialStates = statesWithInTransitions.toArray(new Integer[0]);
-        for(int i = 0; i < nonInitialStates.length; i++) {
-            if(i != nonInitialStates[i]) {
-                initialState = i;
-                break;
-            }
-        }
+		// Find initial and final states by popping the contents of the stack
+		if(!stack.isEmpty()) {
+			initialState = stack.removeFirst();
+			finalState = stack.removeFirst();
+		}
 
         System.out.println("Initial State: " + initialState);
         System.out.println("Final State: " + finalState);
